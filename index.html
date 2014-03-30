@@ -41,7 +41,14 @@ img { max-width: 100%; }
 
 <script>
 function drawCard(deck, $img, $drawn_count, $left_count) {
-    $img.attr("src", deck.draw());
+    var currentCard = $img.attr("src");
+    var nextCard = deck.draw();
+
+    if (currentCard === nextCard) {
+        nextCard = deck.draw();
+    }
+
+    $img.attr("src", nextCard);
     $drawn_count.text(deck.discard.length);
     $left_count.text(deck.deck.length);
 }
@@ -57,6 +64,37 @@ function drawDungeonCard() {
 }
 function drawLtsCard() { 
     drawCard(NDESCENT.LtsDeck, $("#lts_deck_card"), 
+             $("#lts_deck_count .deck_drawn"), 
+             $("#lts_deck_count .deck_left"));
+}
+
+function flipBackCard(deck, $img, $drawn_count, $left_count) {
+    var currentCard = $img.attr("src");
+    var backCard = deck.flipBack();
+
+    if (currentCard === backCard) {
+        backCard = deck.flipBack();
+    }
+
+    $img.attr("src", backCard);
+    drawn = deck.discard.length + 1;
+    left = deck.deck.length - 1;
+
+    $drawn_count.text(drawn);
+    $left_count.text(left);
+}
+function flipBackOverlordCard() { 
+    flipBackCard(NDESCENT.OverlordDeck, $("#overlord_deck_card"), 
+             $("#overlord_deck_count .deck_drawn"), 
+             $("#overlord_deck_count .deck_left"));
+}
+function flipBackDungeonCard() { 
+    flipBackCard(NDESCENT.DungeonDeck, $("#dungeon_deck_card"), 
+             $("#dungeon_deck_count .deck_drawn"), 
+             $("#dungeon_deck_count .deck_left"));
+}
+function flipBackLtsCard() { 
+    flipBackCard(NDESCENT.LtsDeck, $("#lts_deck_card"), 
              $("#lts_deck_count .deck_drawn"), 
              $("#lts_deck_count .deck_left"));
 }
@@ -82,6 +120,9 @@ $(document).ready(function() {
     $("#overlord_deck_draw").click(function() {
         drawOverlordCard();
     });
+    $("#overlord_deck_flip_back").click(function() {
+        flipBackOverlordCard();
+    });
     $("#overlord_deck_reshuffle").click(function() {
         NDESCENT.OverlordDeck.reshuffle();
         drawOverlordCard();
@@ -90,6 +131,9 @@ $(document).ready(function() {
     $("#dungeon_deck_draw").click(function() {
         drawDungeonCard();
     });
+    $("#dungeon_deck_flip_back").click(function() {
+        flipBackDungeonCard();
+    });
     $("#dungeon_deck_reshuffle").click(function() {
         NDESCENT.DungeonDeck.reshuffle();
         drawDungeonCard();
@@ -97,6 +141,9 @@ $(document).ready(function() {
 
     $("#lts_deck_draw").click(function() {
         drawLtsCard();
+    });
+    $("#lts_deck_flip_back").click(function() {
+        flipBackLtsCard();
     });
     $("#lts_deck_reshuffle").click(function() {
         NDESCENT.LtsDeck.reshuffle();
@@ -137,6 +184,7 @@ $(document).ready(function() {
     <div id="overlord_deck_pane">
       <h2>Overlord Deck</h2>
       <button id="overlord_deck_draw">Draw</button>
+      <button id="overlord_deck_flip_back">Flip Back</button>
 
       <span id="overlord_deck_count">
         <span class="deck_drawn">0</span>
@@ -154,6 +202,7 @@ $(document).ready(function() {
     <div id="dungeon_deck_pane">
       <h2>Dungeon Deck</h2>
       <button id="dungeon_deck_draw">Draw</button>
+      <button id="dungeon_deck_flip_back">Flip Back</button>
 
       <span id="dungeon_deck_count">
         <span class="deck_drawn">0</span>
@@ -171,6 +220,7 @@ $(document).ready(function() {
     <div id="lts_deck_pane">
       <h2>Lietenants Deck</h2>
       <button id="lts_deck_draw">Draw</button>
+      <button id="lts_deck_flip_back">Flip Back</button>
 
       <span id="lts_deck_count">
         <span class="deck_drawn">0</span>

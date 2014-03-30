@@ -16,7 +16,18 @@ NDESCENT.Deck = function(directory, cards) {
         var card = this.deck.shift();
 
         if (card != undefined) {
-            this.discard.push(card);
+            this.discard.unshift(card);
+            return this.directory + "/" + card;
+        }
+        else {
+            return undefined;
+        }
+    }
+
+    this.flipBack = function() { 
+        var card = this.discard.shift();
+        if (card != undefined) { 
+            this.deck.unshift(card);
             return this.directory + "/" + card;
         }
         else {

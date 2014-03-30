@@ -71,4 +71,14 @@ describe("NDESCENT.Deck functionality", function() {
         };
         expect(success).toBe(true);
     });
+
+    it("flips back through drawn cards", function() {
+        for(var i = 0; i < 3; i++) { 
+            deck.draw();
+        }
+        expect(deck.flipBack()).toBe("Directory of Images/3");
+        expect(deck.flipBack()).toBe("Directory of Images/2");
+        expect(deck.flipBack()).toBe("Directory of Images/1");
+        expect(deck.flipBack()).not.toBeDefined();
+    });
 });
