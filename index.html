@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Nerdook's Descent Variant: Card Selector</title>
+<title>Nerdook's Assistant: Version 2</title>
 
 <style type="text/css">
 #outer_container { 
@@ -16,11 +16,11 @@
 #content_pane {
 }
 
-#overlord_deck_pane, #dungeon_deck_pane, #lts_deck_pane { 
+#dungeon_deck_pane, #lts_deck_pane, #black_realms_deck_pane, #overlord_event_deck_pane { 
   display: none;
 }
 
-#overlord_deck, #dungeon_deck, #lts_deck { 
+#overlord_ai_deck, #dungeon_deck, #lts_deck, #overlord_event_deck, #black_realms_deck { 
   background-color: black;
   width: 300px;
   height: 465px;
@@ -38,7 +38,7 @@ img { max-width: 100%; }
 </style>
 
 <script src="js/jquery.js"></script>
-<script src="js/ndescent.js"></script>
+<script src="js/ndescent-2.js"></script>
 
 <script>
 function drawCard(deck, $img, $drawn_count, $left_count) {
@@ -53,15 +53,25 @@ function drawCard(deck, $img, $drawn_count, $left_count) {
     $drawn_count.text(deck.discard.length);
     $left_count.text(deck.deck.length);
 }
-function drawOverlordCard() { 
-    drawCard(NDESCENT.OverlordDeck, $("#overlord_deck_card"), 
-             $("#overlord_deck_count .deck_drawn"), 
-             $("#overlord_deck_count .deck_left"));
+function drawOverlordAICard() { 
+    drawCard(NDESCENT.OverlordAIDeck, $("#overlord_ai_deck_card"), 
+             $("#overlord_ai_deck_count .deck_drawn"), 
+             $("#overlord_ai_deck_count .deck_left"));
+}
+function drawOverlordEventCard() { 
+    drawCard(NDESCENT.OverlordEventDeck, $("#overlord_event_deck_card"), 
+             $("#overlord_event_deck_count .deck_drawn"), 
+             $("#overlord_event_deck_count .deck_left"));
 }
 function drawDungeonCard() { 
     drawCard(NDESCENT.DungeonDeck, $("#dungeon_deck_card"), 
              $("#dungeon_deck_count .deck_drawn"), 
              $("#dungeon_deck_count .deck_left"));
+}
+function drawBlackRealmsCard() { 
+    drawCard(NDESCENT.BlackRealmsDeck, $("#black_realms_deck_card"), 
+             $("#black_realms_deck_count .deck_drawn"), 
+             $("#black_realms_deck_count .deck_left"));
 }
 function drawLtsCard() { 
     drawCard(NDESCENT.LtsDeck, $("#lts_deck_card"), 
@@ -84,15 +94,25 @@ function flipBackCard(deck, $img, $drawn_count, $left_count) {
     $drawn_count.text(drawn);
     $left_count.text(left);
 }
-function flipBackOverlordCard() { 
-    flipBackCard(NDESCENT.OverlordDeck, $("#overlord_deck_card"), 
-             $("#overlord_deck_count .deck_drawn"), 
-             $("#overlord_deck_count .deck_left"));
+function flipBackOverlordAICard() { 
+    flipBackCard(NDESCENT.OverlordAIDeck, $("#overlord_ai_deck_card"), 
+             $("#overlord_ai_deck_count .deck_drawn"), 
+             $("#overlord_ai_deck_count .deck_left"));
+}
+function flipBackOverlordEventCard() { 
+    flipBackCard(NDESCENT.OverlordEventDeck, $("#overlord_event_deck_card"), 
+             $("#overlord_event_deck_count .deck_drawn"), 
+             $("#overlord_event_deck_count .deck_left"));
 }
 function flipBackDungeonCard() { 
     flipBackCard(NDESCENT.DungeonDeck, $("#dungeon_deck_card"), 
              $("#dungeon_deck_count .deck_drawn"), 
              $("#dungeon_deck_count .deck_left"));
+}
+function flipBackBlackRealmsCard() { 
+    flipBackCard(NDESCENT.BlackRealmsDeck, $("#black_realms_deck_card"), 
+             $("#black_realms_deck_count .deck_drawn"), 
+             $("#black_realms_deck_count .deck_left"));
 }
 function flipBackLtsCard() { 
     flipBackCard(NDESCENT.LtsDeck, $("#lts_deck_card"), 
@@ -101,32 +121,47 @@ function flipBackLtsCard() {
 }
 
 $(document).ready(function() {
-    $("#big_cards_menu").click(function() {
+    $("#overlord_ai_deck_menu").click(function() {
         $("#content_pane").children().hide();
-        $("#big_cards_pane").show();
+        $("#overlord_ai_deck_pane").show();
     });
-    $("#overlord_deck_menu").click(function() {
+    $("#overlord_event_deck_menu").click(function() {
         $("#content_pane").children().hide();
-        $("#overlord_deck_pane").show();
+        $("#overlord_event_deck_pane").show();
     });
     $("#dungeon_deck_menu").click(function() {
         $("#content_pane").children().hide();
         $("#dungeon_deck_pane").show();
+    });
+    $("#black_realms_deck_menu").click(function() {
+        $("#content_pane").children().hide();
+        $("#black_realms_deck_pane").show();
     });
     $("#lts_deck_menu").click(function() {
         $("#content_pane").children().hide();
         $("#lts_deck_pane").show();
     });
 
-    $("#overlord_deck_draw").click(function() {
-        drawOverlordCard();
+    $("#overlord_ai_deck_draw").click(function() {
+        drawOverlordAICard();
     });
-    $("#overlord_deck_flip_back").click(function() {
-        flipBackOverlordCard();
+    $("#overlord_ai_deck_flip_back").click(function() {
+        flipBackOverlordAICard();
     });
-    $("#overlord_deck_reshuffle").click(function() {
-        NDESCENT.OverlordDeck.reshuffle();
-        drawOverlordCard();
+    $("#overlord_ai_deck_reshuffle").click(function() {
+        NDESCENT.OverlordAIDeck.reshuffle();
+        drawOverlordAICard();
+    });
+
+    $("#overlord_event_deck_draw").click(function() {
+        drawOverlordEventCard();
+    });
+    $("#overlord_event_deck_flip_back").click(function() {
+        flipBackOverlordEventCard();
+    });
+    $("#overlord_event_deck_reshuffle").click(function() {
+        NDESCENT.OverlordEventDeck.reshuffle();
+        drawOverlordEventCard();
     });
 
     $("#dungeon_deck_draw").click(function() {
@@ -140,6 +175,17 @@ $(document).ready(function() {
         drawDungeonCard();
     });
 
+    $("#black_realms_deck_draw").click(function() {
+        drawBlackRealmsCard();
+    });
+    $("#black_realms_deck_flip_back").click(function() {
+        flipBackBlackRealmsCard();
+    });
+    $("#black_realms_deck_reshuffle").click(function() {
+        NDESCENT.BlackRealmsDeck.reshuffle();
+        drawBlackRealmsCard();
+    });
+
     $("#lts_deck_draw").click(function() {
         drawLtsCard();
     });
@@ -151,8 +197,10 @@ $(document).ready(function() {
         drawLtsCard();
     });
 
-    drawOverlordCard();
+    drawOverlordAICard();
+    drawOverlordEventCard();
     drawDungeonCard();
+    drawBlackRealmsCard();
     drawLtsCard();
 });
 </script>
@@ -166,35 +214,49 @@ $(document).ready(function() {
 <div id="outer_container">
   <div id="menu_pane">
     <ul>
-      <li><a id="big_cards_menu" href="#">The Rules</a></li>
-      <li><a id="overlord_deck_menu" href="#">The Overlord Deck</a></li>
-      <li><a id="dungeon_deck_menu" href="#">The Dungeon Deck</a></li>
-      <li><a id="lts_deck_menu" href="#">The Lieutenants Deck</a></li>
+      <li><a id="overlord_ai_deck_menu" href="#">Overlord AI Deck</a></li>
+      <li><a id="overlord_event_deck_menu" href="#">Overlord Event Deck</a></li>
+      <li><a id="dungeon_deck_menu" href="#">Dungeon Deck</a></li>
+      <li><a id="black_realms_deck_menu" href="#">Black Realms Deck</a></li>
+      <li><a id="lts_deck_menu" href="#">Lieutenants Deck</a></li>
     </ul>
   </div>
 
   <div id="content_pane">
 
-    <div id="big_cards_pane">
-      <h2>The Rules</h2>
-      <img src="images/nerdook_rules.jpg" />
-    </div>
+    <div id="overlord_ai_deck_pane">
+      <h2>Overlord AI Deck</h2>
+      <button id="overlord_ai_deck_draw">Draw</button>
+      <button id="overlord_ai_deck_flip_back">Flip Back</button>
 
-    <div id="overlord_deck_pane">
-      <h2>Overlord Deck</h2>
-      <button id="overlord_deck_draw">Draw</button>
-      <button id="overlord_deck_flip_back">Flip Back</button>
-
-      <span id="overlord_deck_count">
+      <span id="overlord_ai_deck_count">
         <span class="deck_drawn">0</span>
         /
         <span class="deck_left">0</span>
       </span>
 
-      <button id="overlord_deck_reshuffle">Reshuffle</button>
+      <button id="overlord_ai_deck_reshuffle">Reshuffle</button>
       <br />
-      <div id="overlord_deck">
-        <img id="overlord_deck_card" />
+      <div id="overlord_ai_deck">
+        <img id="overlord_ai_deck_card" />
+      </div>
+    </div>
+
+    <div id="overlord_event_deck_pane">
+      <h2>Overlord Event Deck</h2>
+      <button id="overlord_event_deck_draw">Draw</button>
+      <button id="overlord_event_deck_flip_back">Flip Back</button>
+
+      <span id="overlord_event_deck_count">
+        <span class="deck_drawn">0</span>
+        /
+        <span class="deck_left">0</span>
+      </span>
+
+      <button id="overlord_event_deck_reshuffle">Reshuffle</button>
+      <br />
+      <div id="overlord_event_deck">
+        <img id="overlord_event_deck_card" />
       </div>
     </div>
 
@@ -216,8 +278,26 @@ $(document).ready(function() {
       </div>
     </div>
 
+    <div id="black_realms_deck_pane">
+      <h2>Black Realms Deck</h2>
+      <button id="black_realms_deck_draw">Draw</button>
+      <button id="black_realms_deck_flip_back">Flip Back</button>
+
+      <span id="black_realms_deck_count">
+        <span class="deck_drawn">0</span>
+        /
+        <span class="deck_left">0</span>
+      </span>
+
+      <button id="black_realms_deck_reshuffle">Reshuffle</button>
+      <br />
+      <div id="black_realms_deck">
+        <img id="black_realms_deck_card" />
+      </div>
+    </div>
+
     <div id="lts_deck_pane">
-      <h2>Lietenants Deck</h2>
+      <h2>Lieutenants Deck</h2>
       <button id="lts_deck_draw">Draw</button>
       <button id="lts_deck_flip_back">Flip Back</button>
 
